@@ -17,7 +17,7 @@ def stack_and_pad(history: list, num_obs: int):
     """
     horizon = len(history)
     full_obs = {k: np.stack([dic[k] for dic in history]) for k in history[0]}
-    pad_length = horizon - max(num_obs, horizon)
+    pad_length = horizon - min(num_obs, horizon)
     pad_mask = np.ones(horizon)
     pad_mask[:pad_length] = 0
     full_obs["pad_mask"] = pad_mask
@@ -222,10 +222,11 @@ class ResizeImageWrapper(gym.ObservationWrapper):
             self.observation_space, gym.spaces.Dict
         ), "Only Dict observation spaces are supported."
         spaces = self.observation_space.spaces
+        self.resize_size = resize_size
 
         if resize_size is None:
             self.keys_to_resize = {}
-        elif isinstance(self.resize_size, tuple):
+        elif isinstance(resize_size, tuple):
             self.keys_to_resize = {k: resize_size for k in spaces if "image_" in k}
         else:
             self.keys_to_resize = {
