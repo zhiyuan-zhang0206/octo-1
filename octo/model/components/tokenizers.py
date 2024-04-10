@@ -185,7 +185,7 @@ class LanguageTokenizer(nn.Module):
         if self.encoder is not None:
             from transformers import AutoConfig, FlaxAutoModel, FlaxT5EncoderModel
 
-            config = AutoConfig.from_pretrained(self.encoder)
+            config = AutoConfig.from_pretrained(self.encoder, )
             if "t5" in self.encoder:
                 self.hf_model = FlaxT5EncoderModel(config).module
             else:
